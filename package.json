@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.2.6",
-    "@legendapp/list": "^2.0.6",
     "@react-navigation/native": "^7.0.0",
     "@rn-primitives/avatar": "^1.2.0",
     "@rn-primitives/dropdown-menu": "^1.2.0",
@@ -22,7 +21,6 @@
     "@rn-primitives/progress": "^1.2.0",
     "@rn-primitives/slot": "^1.2.0",
     "@rn-primitives/tooltip": "^1.2.0",
-    "@shopify/flash-list": "1.7.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.18",
@@ -45,9 +43,7 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
-    "react-native-svg": "15.11.2",
-    "react-native-web": "^0.20.0",
-    "vaul": "^1.1.2"
+    "react-native-svg": "15.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
