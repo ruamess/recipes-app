@@ -8,22 +8,6 @@ export interface Product {
   category: ProductCategory
 }
 
-export interface FridgeItem {
-  id: number
-  productId: number // связь с Product
-  comment?: string
-
-  // 📦 базовое
-  brand?: string
-  expire?: string // срок годности
-  quantity?: number // если в штуках
-  weight?: number // если в граммах/миллилитрах/литрах
-
-  // 📊 статус
-  storage?: 'fridge' | 'freezer' | 'pantry' // где хранится
-  status?: 'fresh' | 'expiring' | 'expired' // удобно выводить подсветку
-}
-
 export type ProductCategory =
   | 'meat'
   | 'fish'
