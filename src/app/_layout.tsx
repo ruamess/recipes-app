@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@react-navigation/native'
 import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { Image } from 'expo-image'
 import { Stack } from 'expo-router'
@@ -11,7 +12,6 @@ import { PortalHost } from '@rn-primitives/portal'
 import { cssInterop } from 'nativewind'
 import { useColorScheme } from 'nativewind'
 import { NAV_THEME } from 'shared/lib'
-import { ThemeToggle } from 'shared/ui/theme-toggle'
 
 import '../../global.css'
 
@@ -58,32 +58,31 @@ export default function RootLayout() {
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
       <View className="flex-1 bg-background" onLayout={onLayoutRootView}>
         <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <Stack
-          screenOptions={{
-            headerTitleAlign: 'center',
-            animation: 'slide_from_right',
-            headerShadowVisible: false,
-            // to hide previous screen's title
-            headerBackButtonDisplayMode: 'minimal',
-            // remove back button title when holding on ios but idk is this work
-            headerBackTitle: '',
-            headerBackButtonMenuEnabled: false,
-          }}
-        >
-          <Stack.Screen
-            name="index"
-            options={{
-              title: 'Fridge',
-              headerRight: () => <ThemeToggle />,
-            }}
-          />
-          <Stack.Screen
-            name="lets-start"
-            options={{
+        <GestureHandlerRootView className="flex-1">
+          <Stack
+            screenOptions={{
+              headerTitleAlign: 'center',
+              animation: 'slide_from_right',
               headerShown: false,
+              headerShadowVisible: false,
+              // to hide previous screen's title
+              headerBackButtonDisplayMode: 'minimal',
+              // remove back button title when holding on ios but idk is this work
+              headerBackTitle: '',
+              headerBackButtonMenuEnabled: false,
             }}
-          />
-        </Stack>
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen
+              name="add-fridge-item"
+              options={{
+                title: 'Add Fridge Item',
+                presentation: 'card',
+                animation: 'slide_from_bottom',
+              }}
+            />
+          </Stack>
+        </GestureHandlerRootView>
         <PortalHost />
       </View>
     </ThemeProvider>
