@@ -1,4 +1,3 @@
-import { Trash2 } from 'lucide-react-native'
 import { forwardRef } from 'react'
 import { View } from 'react-native'
 
@@ -8,7 +7,6 @@ import type { FridgeItem } from 'entities/fridge-item/model/types'
 import { Product } from 'entities/product/model/types'
 import { MyBottomSheet } from 'shared/ui/bottom-sheet'
 import { Button } from 'shared/ui/button'
-import { Icon } from 'shared/ui/icon'
 import { Text } from 'shared/ui/text'
 
 type Props = {
@@ -18,8 +16,8 @@ type Props = {
   onChange: (i: number) => void
 }
 
-export const ProductDetailsSheet = forwardRef<BottomSheet, Props>(
-  ({ item, product, onRemove, onChange }, ref) => {
+export const FridgeItemDetailsSheet = forwardRef<BottomSheet, Props>(
+  ({ item, product, onChange }, ref) => {
     return (
       <MyBottomSheet
         ref={ref}
@@ -53,13 +51,8 @@ export const ProductDetailsSheet = forwardRef<BottomSheet, Props>(
             </Row>
           )}
         </View>
-        <Button
-          variant="destructive"
-          className="flex h-12 w-full flex-row items-center justify-center gap-2"
-          onPress={onRemove}
-        >
-          <Icon className="text-white" as={Trash2} size={20} strokeWidth={1.2} />
-          <Text>Remove</Text>
+        <Button className="flex h-12 w-full flex-row items-center justify-center gap-2">
+          <Text>Close</Text>
         </Button>
       </MyBottomSheet>
     )

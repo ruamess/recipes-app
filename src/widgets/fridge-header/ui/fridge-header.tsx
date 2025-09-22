@@ -1,9 +1,8 @@
-import { CalendarClock, Check, Filter, Plus } from 'lucide-react-native'
+import { CalendarClock, Check, Filter } from 'lucide-react-native'
 import { View } from 'react-native'
 
 import type { FridgeFilter } from 'features/filter-fridge-items/model/types'
 import { FRIDGE_FILTER_LABEL } from 'features/filter-fridge-items/model/types'
-import { Button } from 'shared/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,10 +18,9 @@ import { ThemeToggle } from 'shared/ui/theme-toggle'
 type Props = {
   filter: FridgeFilter
   onChange: (f: FridgeFilter) => void
-  onAdd: () => void
 }
 
-export function FridgeHeader({ filter, onChange, onAdd }: Props) {
+export function FridgeHeader({ filter, onChange }: Props) {
   const list: FridgeFilter[] = ['all', 'expiringSoon', 'expired', 'fresh', 'lowQty']
   return (
     <View className="w-full flex-row items-center justify-between">
@@ -61,9 +59,6 @@ export function FridgeHeader({ filter, onChange, onAdd }: Props) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button className="h-10 w-10 rounded-full" onPress={onAdd}>
-          <Icon as={Plus} size={18} className="text-background" />
-        </Button>
       </View>
     </View>
   )

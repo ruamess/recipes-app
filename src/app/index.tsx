@@ -1,3 +1,4 @@
+import { Plus } from 'lucide-react-native'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -11,9 +12,11 @@ import { applyFridgeFilter, sortFridgeItems } from 'features/filter-fridge-items
 import type { FridgeFilter } from 'features/filter-fridge-items/model/types'
 import { fridgeItems } from 'shared/data/fridgeItems'
 import { products } from 'shared/data/products'
+import { Button } from 'shared/ui/button'
+import { Icon } from 'shared/ui/icon'
 import { FridgeHeader } from 'widgets/fridge-header/ui'
-import { FridgeList } from 'widgets/fridge-list/ui'
-import { ProductDetailsSheet } from 'widgets/product-details-sheet/ui'
+import { FridgeItemDetailsSheet } from 'widgets/fridge-item-details-sheet/ui'
+import { FridgeList } from 'widgets/fridge-list/ui/fridge-list'
 
 export default function Screen() {
   const insets = useSafeAreaInsets()
@@ -50,15 +53,18 @@ export default function Screen() {
 
   return (
     <View style={{ paddingTop: insets.top + 20 }} className="flex-1 gap-6 bg-background px-4 pb-4">
-      <FridgeHeader
-        filter={filter}
-        onChange={setFilter}
-        onAdd={() => router.push('/add-fridge-item')}
-      />
+      <FridgeHeader filter={filter} onChange={setFilter} />
 
       <FridgeList items={items} productsById={productsById} onPress={openDetails} />
 
-      <ProductDetailsSheet
+      <Button
+        className="absolute bottom-7 right-4 h-16 w-16 rounded-full"
+        onPress={() => router.push('/add-fridge-item')}
+      >
+        <Icon as={Plus} size={23} className="text-background" />
+      </Button>
+
+      <FridgeItemDetailsSheet
         ref={sheetRef}
         item={selected}
         product={selected ? productsById[selected.productId] : undefined}
