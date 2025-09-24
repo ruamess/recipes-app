@@ -10,10 +10,8 @@ export default function (api) {
           root: ['./src/'],
           alias: {
             app: './src/app',
-            screens: './src/screens',
-            widgets: './src/widgets',
-            features: './src/features',
-            entities: './src/entities',
+            components: './src/components',
+            domain: './src/domain',
             shared: './src/shared',
           },
         },

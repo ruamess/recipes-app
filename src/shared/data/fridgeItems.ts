@@ -1,4 +1,4 @@
-import { FridgeItem } from 'entities/fridge-item/model/types'
+import { FridgeItem } from 'domain/fridge/item/types'
 
 export const fridgeItems: FridgeItem[] = [
   { id: 1, productId: 24, quantity: 200, storage: 'fridge', expire: '2025-09-21' },

@@ -1,4 +1,4 @@
-import { Product } from 'entities/product/model/types'
+import { Product } from 'domain/product/item/types'
 
 export const products: Product[] = [
   // 🥩 Meat
