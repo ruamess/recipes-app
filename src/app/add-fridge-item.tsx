@@ -1,26 +1,64 @@
 /* eslint-disable react-native/no-inline-styles */
 import { ArrowLeft } from 'lucide-react-native'
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { KeyboardAvoidingView, ScrollView, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useRouter } from 'expo-router'
 
 import BottomSheet from '@gorhom/bottom-sheet'
-import { AnimatedFlashList } from '@shopify/flash-list'
-import { CATEGORY_LABELS, type Product, type ProductCategory } from 'entities/product/model/types'
-import { buildProductRows, filterProducts } from 'features/select-product/model/buildRows'
-import type { ProductRow } from 'features/select-product/model/types'
-import { CategoryChip } from 'features/select-product/ui/category-chip'
+import { LegendList } from '@legendapp/list'
+import { Badge } from 'components/atoms/badge'
+import { Button } from 'components/atoms/button'
+import { Card } from 'components/atoms/card'
+import { Icon } from 'components/atoms/icon'
+import { Input } from 'components/atoms/input'
+import { Text } from 'components/atoms/text'
+import { CategoryChip } from 'components/molecules/category-chip'
+import { ProductSelectSheet } from 'components/organisms/product-select-sheet'
+import { CATEGORY_LABELS, type Product, type ProductCategory } from 'domain/product/item/types'
+import { buildProductRows, filterProducts } from 'domain/product/search/buildRows'
+import type { ProductRow } from 'domain/product/search/types'
 import { products } from 'shared/data/products'
 import { useDebouncedValue } from 'shared/lib/useDebouncedValue'
-import { Badge } from 'shared/ui/badge'
-import { Button } from 'shared/ui/button'
-import { Card } from 'shared/ui/card'
-import { Icon } from 'shared/ui/icon'
-import { Input } from 'shared/ui/input'
-import { Text } from 'shared/ui/text'
-import { ProductSelectSheet } from 'widgets/product-select-sheet/ui'
+
+const ProductRow = React.memo(
+  ({ product, onPick }: { product: Product; onPick: (p: Product) => void }) => (
+    <TouchableOpacity activeOpacity={0.7} onPress={() => onPick(product)}>
+      <Card className="mb-2 w-full rounded-xl border border-border/60 bg-card px-3 py-3">
+        <View className="w-full flex-row items-center justify-between">
+          <View className="flex-row items-center gap-3">
+            <View className="h-10 w-10 items-center justify-center rounded-lg bg-muted">
+              <Text className="text-lg">{product.emoji}</Text>
+            </View>
+            <View>
+              <Text className="text-base">{product.name}</Text>
+              <Text className="text-xs capitalize text-muted-foreground">
+                {CATEGORY_LABELS[product.category]}
+              </Text>
+            </View>
+          </View>
+          <Badge variant="secondary">
+            <Text>{product.unit}</Text>
+          </Badge>
+        </View>
+      </Card>
+    </TouchableOpacity>
+  ),
+)
+
+const HeaderRow = React.memo(({ letter }: { letter: string }) => (
+  <View className="bg-background px-1 py-1">
+    <Text className="text-xs font-medium text-muted-foreground">{letter}</Text>
+  </View>
+))
+
+const EmptyComponent = () => (
+  <View className="my-40 flex-1 items-center justify-center">
+    <Text className="text-lg font-medium text-muted-foreground">Nothing found</Text>
+    <Text className="mt-2 text-sm text-muted-foreground">Попробуйте изменить фильтры</Text>
+  </View>
+)
 
 export default function ProductPicker() {
   const router = useRouter()
@@ -28,10 +66,6 @@ export default function ProductPicker() {
 
   const sheetRef = useRef<BottomSheet>(null)
   const [selected, setSelected] = useState<Product | null>(null)
-
-  const onSheetChange = useCallback((i: number) => {
-    if (i < 0) setSelected(null)
-  }, [])
 
   const [category, setCategory] = useState<ProductCategory | 'all'>('all')
   const [queryInput, setQueryInput] = useState('')
@@ -63,48 +97,29 @@ export default function ProductPicker() {
     console.log('Pick product:', p.id, p.name)
   }, [])
 
+  const onSheetChange = useCallback((i: number) => {
+    if (i < 0) setSelected(null)
+  }, [])
+
+  const keyExtractor = useCallback(
+    (item: ProductRow, i: number) =>
+      item.type === 'header' ? `h-${item.letter}-${i}` : `p-${item.product.id}`,
+    [],
+  )
+
   const renderItem = useCallback(
-    ({ item }: { item: ProductRow }) => {
-      if (item.type === 'header') {
-        return (
-          <View className="bg-background px-1 py-1">
-            <Text className="text-xs font-medium text-muted-foreground">{item.letter}</Text>
-          </View>
-        )
-      }
-      const p = item.product
-      return (
-        <TouchableOpacity activeOpacity={0.7} onPress={() => handlePick(p)}>
-          <Card className="mb-2 w-full rounded-xl border border-border/60 bg-card px-3 py-3">
-            <View className="w-full flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3">
-                <View className="h-10 w-10 items-center justify-center rounded-lg bg-muted">
-                  <Text className="text-lg">{p.emoji}</Text>
-                </View>
-                <View>
-                  <Text className="text-base">{p.name}</Text>
-                  <Text className="text-xs capitalize text-muted-foreground">
-                    {CATEGORY_LABELS[p.category]}
-                  </Text>
-                </View>
-              </View>
-              <Badge variant="secondary">
-                <Text>{p.unit}</Text>
-              </Badge>
-            </View>
-          </Card>
-        </TouchableOpacity>
-      )
-    },
+    ({ item }: { item: ProductRow }) =>
+      item.type === 'header' ? (
+        <HeaderRow letter={item.letter} />
+      ) : (
+        <ProductRow product={item.product} onPick={handlePick} />
+      ),
     [handlePick],
   )
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, paddingTop: insets.top + 20 }}
-      className="flex-1 gap-4 bg-background px-4"
-      behavior={'padding'}
-    >
+    <View style={{ paddingTop: insets.top + 20 }} className="flex-1 gap-4 bg-background px-4">
+      {/* Header */}
       <View className="flex-row items-center justify-between gap-2">
         <Button variant="ghost" className="w-10" onPress={() => router.back()}>
           <Icon as={ArrowLeft} size={21} className="text-foreground" />
@@ -121,11 +136,7 @@ export default function ProductPicker() {
         className="max-h-12 py-1"
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: 2,
-          alignItems: 'center',
-          gap: 8,
-        }}
+        contentContainerStyle={{ paddingHorizontal: 2, alignItems: 'center', gap: 8 }}
       >
         <CategoryChip label="All" active={category === 'all'} onPress={() => setCategory('all')} />
         {allCategories.map((c) => (
@@ -138,23 +149,17 @@ export default function ProductPicker() {
         ))}
       </ScrollView>
 
-      <AnimatedFlashList
+      <LegendList
         data={rows}
-        keyExtractor={(item, i) =>
-          item.type === 'header' ? `h-${item.letter}-${i}` : `p-${item.product.id}`
-        }
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
+        ListEmptyComponent={<EmptyComponent />}
+        estimatedItemSize={56}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 12 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom + 12 }}
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center py-10">
-            <Text className="text-center text-muted-foreground">Nothing found</Text>
-          </View>
-        }
       />
 
-      {/* TODO: fix flatlist and scrollview bug when bottom sheet is closed */}
       <ProductSelectSheet ref={sheetRef} item={selected} onChange={onSheetChange} />
-    </KeyboardAvoidingView>
+    </View>
   )
 }
