@@ -38,9 +38,6 @@ interface BaseDatePickerProps {
   variant?: 'filled' | 'outline' | 'group'
   labelStyle?: TextStyle
   errorStyle?: TextStyle
-  // общий class для компонента (обертки)
-  className?: string
-  // кастомный класс только для триггерной области (то, на что юзер нажимает)
   triggerClassName?: string
 }
 
