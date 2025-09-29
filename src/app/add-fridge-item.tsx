@@ -1,18 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import { ArrowLeft } from 'lucide-react-native'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { ScrollView, TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useRouter } from 'expo-router'
 
-import BottomSheet from '@gorhom/bottom-sheet'
 import { LegendList } from '@legendapp/list'
 import { Badge } from 'components/atoms/badge'
 import { Button } from 'components/atoms/button'
 import { Card } from 'components/atoms/card'
 import { Icon } from 'components/atoms/icon'
 import { Input } from 'components/atoms/input'
+import { BottomSheetMethods } from 'components/atoms/my-bottom-sheet/types'
 import { Text } from 'components/atoms/text'
 import { CategoryChip } from 'components/molecules/category-chip'
 import { ProductSelectSheet } from 'components/organisms/product-select-sheet'
@@ -64,7 +65,7 @@ export default function ProductPicker() {
   const router = useRouter()
   const insets = useSafeAreaInsets()
 
-  const sheetRef = useRef<BottomSheet>(null)
+  const sheetRef = useRef<BottomSheetMethods>(null)
   const [selected, setSelected] = useState<Product | null>(null)
 
   const [category, setCategory] = useState<ProductCategory | 'all'>('all')
@@ -144,7 +145,10 @@ export default function ProductPicker() {
             key={c}
             label={CATEGORY_LABELS[c]}
             active={category === c}
-            onPress={() => setCategory(c)}
+            onPress={() => {
+              console.log('Selected category:', c)
+              setCategory(c)
+            }}
           />
         ))}
       </ScrollView>
@@ -159,7 +163,7 @@ export default function ProductPicker() {
         showsVerticalScrollIndicator={false}
       />
 
-      <ProductSelectSheet ref={sheetRef} item={selected} onChange={onSheetChange} />
+      <ProductSelectSheet ref={sheetRef} item={selected} />
     </View>
   )
 }

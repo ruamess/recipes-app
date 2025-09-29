@@ -13,10 +13,11 @@ import { FadeIn } from 'react-native-reanimated'
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens'
 
 import * as DropdownMenuPrimitive from '@rn-primitives/dropdown-menu'
-import { cn } from 'shared/lib/utils'
-import { Icon } from 'components/atoms/icon'
-import { NativeOnlyAnimatedView } from 'components/atoms/native-only-animated-view'
-import { TextClassContext } from 'components/atoms/text'
+import { cn } from 'shared/lib'
+
+import { Icon } from '../icon'
+import { NativeOnlyAnimatedView } from '../native-only-animated-view'
+import { TextClassContext } from '../text'
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 
@@ -111,9 +112,9 @@ function DropdownMenuContent({
             web: overlayStyle ?? undefined,
             native: overlayStyle
               ? StyleSheet.flatten([
-                StyleSheet.absoluteFill,
-                overlayStyle as typeof StyleSheet.absoluteFill,
-              ])
+                  StyleSheet.absoluteFill,
+                  overlayStyle as typeof StyleSheet.absoluteFill,
+                ])
               : StyleSheet.absoluteFill,
           })}
           className={overlayClassName}

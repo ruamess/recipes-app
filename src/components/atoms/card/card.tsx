@@ -1,7 +1,7 @@
 import { View, type ViewProps } from 'react-native'
 
-import { cn } from 'shared/lib'
 import { Text, TextClassContext } from 'components/atoms/text'
+import { cn } from 'shared/lib'
 
 function Card({ className, ...props }: ViewProps & React.RefAttributes<View>) {
   return (

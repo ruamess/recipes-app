@@ -2,8 +2,8 @@ import { Platform, View, ViewProps } from 'react-native'
 
 import * as Slot from '@rn-primitives/slot'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from 'shared/lib'
 import { TextClassContext } from 'components/atoms/text'
+import { cn } from 'shared/lib'
 
 const badgeVariants = cva(
   cn(

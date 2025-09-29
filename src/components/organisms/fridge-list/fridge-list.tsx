@@ -1,10 +1,10 @@
 import { TouchableOpacity, View } from 'react-native'
 
-import type { FridgeItem } from 'domain/fridge/item/types'
-import { Product } from 'domain/product/item/types'
 import { Card, CardContent } from 'components/atoms/card'
 import { CircularExpiryProgress } from 'components/atoms/circular-expiry-progress'
 import { Text } from 'components/atoms/text'
+import type { FridgeItem } from 'domain/fridge/item/types'
+import { Product } from 'domain/product/item/types'
 
 type Props = {
   items: FridgeItem[]

@@ -1,13 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Platform, TextInput, type TextInputProps } from 'react-native'
 
 import { cn } from 'shared/lib/utils'
 
-function Input({
-  className,
-  placeholderClassName,
-  ...props
-}: TextInputProps & React.RefAttributes<TextInput>) {
+function Input({ className, ...props }: TextInputProps & React.RefAttributes<TextInput>) {
   return (
     <TextInput
       className={cn(

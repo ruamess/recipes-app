@@ -4,9 +4,9 @@ import { FadeInDown, FadeInUp, FadeOut } from 'react-native-reanimated'
 import { FullWindowOverlay as RNFullWindowOverlay } from 'react-native-screens'
 
 import * as TooltipPrimitive from '@rn-primitives/tooltip'
-import { cn } from 'shared/lib'
 import { NativeOnlyAnimatedView } from 'components/atoms/native-only-animated-view'
 import { TextClassContext } from 'components/atoms/text'
+import { cn } from 'shared/lib'
 
 const Tooltip = TooltipPrimitive.Root
 

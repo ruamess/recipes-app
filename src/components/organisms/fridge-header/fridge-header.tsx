@@ -1,8 +1,6 @@
 import { CalendarClock, Check, Filter } from 'lucide-react-native'
 import { View } from 'react-native'
 
-import type { FridgeFilter } from 'domain/fridge/filter/types'
-import { FRIDGE_FILTER_LABEL } from 'domain/fridge/filter/types'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +12,8 @@ import {
 import { Icon } from 'components/atoms/icon'
 import { Text } from 'components/atoms/text'
 import { ThemeToggle } from 'components/atoms/theme-toggle'
+import type { FridgeFilter } from 'domain/fridge/filter/types'
+import { FRIDGE_FILTER_LABEL } from 'domain/fridge/filter/types'
 
 type Props = {
   filter: FridgeFilter

@@ -5,9 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useRouter } from 'expo-router'
 
-import BottomSheet from '@gorhom/bottom-sheet'
+// import BottomSheet from '@gorhom/bottom-sheet'
 import { Button } from 'components/atoms/button'
 import { Icon } from 'components/atoms/icon'
+import { BottomSheetMethods } from 'components/atoms/my-bottom-sheet/types'
 import { FridgeHeader } from 'components/organisms/fridge-header'
 import { FridgeItemDetailsSheet } from 'components/organisms/fridge-item-details-sheet'
 import { FridgeList } from 'components/organisms/fridge-list'
@@ -22,7 +23,8 @@ export default function Screen() {
   const insets = useSafeAreaInsets()
   const router = useRouter()
 
-  const sheetRef = useRef<BottomSheet>(null)
+  const bottomSheetRef = useRef<BottomSheetMethods>(null)
+
   const [filter, setFilter] = useState<FridgeFilter>('all')
   const [selected, setSelected] = useState<FridgeItem | null>(null)
 
@@ -39,7 +41,7 @@ export default function Screen() {
 
   const openDetails = (it: FridgeItem) => {
     setSelected(it)
-    sheetRef.current?.expand()
+    bottomSheetRef.current?.expand()
   }
 
   const onSheetChange = useCallback((i: number) => {
@@ -48,7 +50,7 @@ export default function Screen() {
 
   const removeItem = () => {
     // TODO: feature remove-fridge-item
-    sheetRef.current?.close()
+    bottomSheetRef.current?.close()
   }
 
   return (
@@ -65,11 +67,11 @@ export default function Screen() {
       </Button>
 
       <FridgeItemDetailsSheet
-        ref={sheetRef}
+        ref={bottomSheetRef}
         item={selected}
         product={selected ? productsById[selected.productId] : undefined}
         onRemove={removeItem}
-        onChange={onSheetChange}
+        // onChange={onSheetChange}
       />
     </View>
   )

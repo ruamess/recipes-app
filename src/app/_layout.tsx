@@ -55,19 +55,17 @@ export default function RootLayout() {
   if (!appIsReady) return null
 
   return (
-    <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-      <View className="flex-1 bg-background" onLayout={onLayoutRootView}>
+    <GestureHandlerRootView className="flex-1" onLayout={onLayoutRootView}>
+      <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
         <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <GestureHandlerRootView className="flex-1">
+        <View className="flex-1 bg-background">
           <Stack
             screenOptions={{
               headerTitleAlign: 'center',
               animation: 'slide_from_right',
               headerShown: false,
               headerShadowVisible: false,
-              // to hide previous screen's title
               headerBackButtonDisplayMode: 'minimal',
-              // remove back button title when holding on ios but idk is this work
               headerBackTitle: '',
               headerBackButtonMenuEnabled: false,
             }}
@@ -82,9 +80,9 @@ export default function RootLayout() {
               }}
             />
           </Stack>
-        </GestureHandlerRootView>
-        <PortalHost />
-      </View>
-    </ThemeProvider>
+          <PortalHost />
+        </View>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   )
 }
