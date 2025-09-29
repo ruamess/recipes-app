@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 
 import { BottomSheet } from 'components/atoms/bottom-sheet'
@@ -16,6 +16,16 @@ type Props = {
 
 export const ProductSelectSheet = ({ isVisible, onClose, item }: Props) => {
   const [expireAt, setExpireAt] = useState<Date | undefined>(undefined)
+  const [quantity, setQuantity] = useState<string | undefined>(undefined)
+  useEffect(() => {
+    if (!isVisible) {
+      setExpireAt(undefined)
+      setQuantity(undefined)
+    }
+  }, [isVisible])
+
+  console.log('render ProductSelectSheet', { item })
+  console.log('render ProductSelectSheet', { expireAt, quantity })
 
   return (
     <BottomSheet isVisible={isVisible} onClose={onClose} snapPoints={[0.36]}>
@@ -27,7 +37,12 @@ export const ProductSelectSheet = ({ isVisible, onClose, item }: Props) => {
 
         <View className="w-full gap-5">
           <Row label="Quantity">
-            <Input className="w-fit" />
+            <Input
+              className="w-fit !bg-transparent"
+              keyboardType="numeric"
+              value={quantity}
+              onChangeText={setQuantity}
+            />
             <Text className="text-sm">{item?.unit}</Text>
           </Row>
 
@@ -38,6 +53,7 @@ export const ProductSelectSheet = ({ isVisible, onClose, item }: Props) => {
               onChange={setExpireAt}
               minimumDate={new Date()}
               variant="outline"
+              triggerClassName="w-36"
             />
           </Row>
         </View>
