@@ -1,14 +1,13 @@
 import { Plus } from 'lucide-react-native'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useRouter } from 'expo-router'
 
-// import BottomSheet from '@gorhom/bottom-sheet'
+import { useBottomSheet } from 'components/atoms/bottom-sheet'
 import { Button } from 'components/atoms/button'
 import { Icon } from 'components/atoms/icon'
-import { BottomSheetMethods } from 'components/atoms/my-bottom-sheet/types'
 import { FridgeHeader } from 'components/organisms/fridge-header'
 import { FridgeItemDetailsSheet } from 'components/organisms/fridge-item-details-sheet'
 import { FridgeList } from 'components/organisms/fridge-list'
@@ -20,10 +19,9 @@ import { fridgeItems } from 'shared/data/fridgeItems'
 import { products } from 'shared/data/products'
 
 export default function Screen() {
+  const { isVisible, open, close } = useBottomSheet()
   const insets = useSafeAreaInsets()
   const router = useRouter()
-
-  const bottomSheetRef = useRef<BottomSheetMethods>(null)
 
   const [filter, setFilter] = useState<FridgeFilter>('all')
   const [selected, setSelected] = useState<FridgeItem | null>(null)
@@ -41,16 +39,7 @@ export default function Screen() {
 
   const openDetails = (it: FridgeItem) => {
     setSelected(it)
-    bottomSheetRef.current?.expand()
-  }
-
-  const onSheetChange = useCallback((i: number) => {
-    if (i < 0) setSelected(null)
-  }, [])
-
-  const removeItem = () => {
-    // TODO: feature remove-fridge-item
-    bottomSheetRef.current?.close()
+    open()
   }
 
   return (
@@ -67,11 +56,11 @@ export default function Screen() {
       </Button>
 
       <FridgeItemDetailsSheet
-        ref={bottomSheetRef}
+        isVisible={isVisible}
+        onClose={close}
         item={selected}
         product={selected ? productsById[selected.productId] : undefined}
-        onRemove={removeItem}
-        // onChange={onSheetChange}
+        onRemove={close}
       />
     </View>
   )

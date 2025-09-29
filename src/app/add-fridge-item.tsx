@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import { ArrowLeft } from 'lucide-react-native'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -9,11 +9,11 @@ import { useRouter } from 'expo-router'
 
 import { LegendList } from '@legendapp/list'
 import { Badge } from 'components/atoms/badge'
+import { useBottomSheet } from 'components/atoms/bottom-sheet'
 import { Button } from 'components/atoms/button'
 import { Card } from 'components/atoms/card'
 import { Icon } from 'components/atoms/icon'
 import { Input } from 'components/atoms/input'
-import { BottomSheetMethods } from 'components/atoms/my-bottom-sheet/types'
 import { Text } from 'components/atoms/text'
 import { CategoryChip } from 'components/molecules/category-chip'
 import { ProductSelectSheet } from 'components/organisms/product-select-sheet'
@@ -62,10 +62,10 @@ const EmptyComponent = () => (
 )
 
 export default function ProductPicker() {
+  const { isVisible, open, close } = useBottomSheet()
   const router = useRouter()
   const insets = useSafeAreaInsets()
 
-  const sheetRef = useRef<BottomSheetMethods>(null)
   const [selected, setSelected] = useState<Product | null>(null)
 
   const [category, setCategory] = useState<ProductCategory | 'all'>('all')
@@ -94,12 +94,8 @@ export default function ProductPicker() {
 
   const handlePick = useCallback((p: Product) => {
     setSelected(p)
-    sheetRef.current?.expand()
+    open()
     console.log('Pick product:', p.id, p.name)
-  }, [])
-
-  const onSheetChange = useCallback((i: number) => {
-    if (i < 0) setSelected(null)
   }, [])
 
   const keyExtractor = useCallback(
@@ -163,7 +159,7 @@ export default function ProductPicker() {
         showsVerticalScrollIndicator={false}
       />
 
-      <ProductSelectSheet ref={sheetRef} item={selected} />
+      <ProductSelectSheet isVisible={isVisible} onClose={close} item={selected} />
     </View>
   )
 }
