@@ -50,7 +50,7 @@ export default function Screen() {
 
       <Button
         className="absolute bottom-7 right-4 h-16 w-16 rounded-full"
-        onPress={() => router.push('/add-fridge-item')}
+        onPress={() => router.navigate('/add-fridge-item')}
       >
         <Icon as={Plus} size={23} className="text-background" />
       </Button>
