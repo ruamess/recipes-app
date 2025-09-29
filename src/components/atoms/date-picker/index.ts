@@ -1,1 +1,1 @@
-export * from './ui/date-picker'
+export * from './date-picker'
