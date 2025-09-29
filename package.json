@@ -13,8 +13,6 @@
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix"
   },
   "dependencies": {
-    "@legendapp/list": "^2.0.6",
-    "@react-native-community/datetimepicker": "^8.4.5",
     "@react-navigation/native": "^7.0.0",
     "@rn-primitives/avatar": "^1.2.0",
     "@rn-primitives/dropdown-menu": "^1.2.0",
