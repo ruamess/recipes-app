@@ -1,1 +1,1 @@
-export * from './ui/bottom-sheet'
+export * from './bottom-sheet'
