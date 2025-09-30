@@ -16,7 +16,7 @@ type Props = {
 
 export const FridgeItemDetailsSheet = ({ isVisible, onClose, item, product }: Props) => {
   return (
-    <BottomSheet isVisible={isVisible} onClose={onClose} snapPoints={[0.28, 0.5]}>
+    <BottomSheet isVisible={isVisible} onClose={onClose} snapPoints={[0.28]}>
       <View className="flex-row items-center justify-center gap-3">
         <Text className="text-lg">{product?.emoji}</Text>
         <Text className="text-lg">{product?.name}</Text>
